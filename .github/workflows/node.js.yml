@@ -2,9 +2,9 @@ name: Build on Merge
 
 # Run this workflow when a pull request is merged into the main branch
 on:
-  push:
+  pull_request:
     branches:
-      - TestBranchRules # Replace this with the branch you want to monitor for merges
+      - TestBranchesRules # Change this to the branch you want to merge into
 
 jobs:
   build:
@@ -45,3 +45,10 @@ jobs:
       - name: Deploy (only if build succeeds)
         if: success() # Continue only if the previous steps succeed
         run: echo "Deploying..." # Replace this with your actual deploy command
+
+      - name: Create Pull Request
+        if: success() # Only create PR if previous steps succeed
+        run: |
+          curl -X POST -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+          -d '{"title": "Automated PR", "head": "build-check", "base": "main"}' \
+          https://api.github.com/repos/${{ github.repository }}/pulls
