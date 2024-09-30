@@ -4,7 +4,7 @@ name: Build on Merge
 on:
   push:
     branches:
-      - build-check # Replace this with the branch you want to monitor for merges
+      - TestBranchRules # Replace this with the branch you want to monitor for merges
 
 jobs:
   build:
