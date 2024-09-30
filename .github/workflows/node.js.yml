@@ -4,7 +4,7 @@ name: Build on Merge
 on:
   pull_request:
     branches:
-      - TestBranchesRules # Change this to the branch you want to merge into
+      - build-check # Change this to the branch you want to merge into
 
 jobs:
   build:
@@ -46,9 +46,4 @@ jobs:
         if: success() # Continue only if the previous steps succeed
         run: echo "Deploying..." # Replace this with your actual deploy command
 
-      - name: Create Pull Request
-        if: success() # Only create PR if previous steps succeed
-        run: |
-          curl -X POST -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
-          -d '{"title": "Automated PR", "head": "build-check", "base": "main"}' \
-          https://api.github.com/repos/${{ github.repository }}/pulls
+      
