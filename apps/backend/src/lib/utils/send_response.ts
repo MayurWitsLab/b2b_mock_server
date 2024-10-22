@@ -31,7 +31,7 @@ async function send_response(
     if (res_obj.bpp_uri) delete res_obj.bpp_uri;
 
     const header = await createAuthHeader(res_obj);
-    // res_obj.bpp_uri = bpp_uri
+    // res_obj.bpp_uri = bpp_uri.
 
   //Approach 1
     if(version ==='b2b' || version === 'b2c'){
