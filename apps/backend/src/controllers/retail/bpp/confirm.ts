@@ -3,19 +3,25 @@ import {
   responseBuilder,
   Fulfillment,
   B2C_EXAMPLES_PATH,
+  logger,
+  redis,
 } from "../../../lib/utils";
 import fs from "fs";
 import path from "path";
 import YAML from "yaml";
 
-export const confirmController = (
+export const confirmController = async (
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
   try {
     const { scenario } = req.query;
-    
+    const {context}=req.body
+    const VERSION=await redis.keys(`${context.transaction_id}-version-*`)
+    const parts = VERSION[0].split('-');
+    const versionn = parts[parts.length - 1];
+      logger.info(`version at confm ${versionn}`)
 
     switch (scenario) {
       case "cancelled":
@@ -48,7 +54,7 @@ const confirmDomesticController = (
     );
 
     const response = YAML.parse(file.toString());
-
+    console.log("messagggeee",JSON.stringify(message.order))
     const responseMessage = {
       order: {
         ...message.order,

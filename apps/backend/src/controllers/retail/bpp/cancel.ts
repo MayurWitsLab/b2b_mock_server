@@ -24,10 +24,32 @@ export const cancelController = async (
       return send_nack(res, "On Confirm doesn't exist");
     }
     // getting on_search data for payment_ids
-    const search = await redis.mget(`${transaction_id}-on_search-from-server`);
-    const parsedSearch = search.map((ele: any) => {
-      return JSON.parse(ele as string);
-    });
+    // const search = await redis.mget(`${transaction_id}-on_search-from-server`);
+    // const parsedSearch = search.map((ele: any) => {
+    //   return JSON.parse(ele as string);
+    // });
+    
+
+    var transactionKeys = await redis.keys(`${transaction_id}-*`);
+		var ifTransactionExist = transactionKeys.filter((e) =>
+			e.includes("on_search-from-server")
+		);
+		if (ifTransactionExist.length === 0) {
+			return send_nack(res, "On search doesn't exist");
+		}
+		var transaction = await redis.mget(ifTransactionExist);
+		// var parsedTransaction = transaction.map((ele) => {
+		// 	return JSON.parse(ele as string);
+		// });
+			const parsedSearch = transaction.map((ele: any) => {
+				return JSON.parse(ele as string);
+			});
+
+
+
+
+
+
     // console.log("Search ::", parsedSearch[0].request.message.catalog.providers)
 
     const provider_id = on_confirm.message.order.provider.id;
@@ -71,6 +93,7 @@ const cancelRequest = async (
   try {
     // const { message } = transaction
     const { context } = req.body;
+    console.log("transctionmessage",JSON.stringify(transaction.message.order))
     const responseMessage = {
       ...transaction.message,
       order: {

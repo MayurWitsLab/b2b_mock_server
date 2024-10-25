@@ -59,6 +59,7 @@ export const jsonSchemaValidator = <T extends Domain>({
 }: JsonSchemaValidatorType<T>) => {
   return async (req: Request, res: Response, next: NextFunction) => {
     try {
+      console.log("essential",domain,VERSION)
       const l2 = await redis.get("l2_validations");
       if (l2 != null && JSON.parse(l2).includes(domain)) {
         return l2Validator(domain)(req, res, next);

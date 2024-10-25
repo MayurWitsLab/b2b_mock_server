@@ -58,7 +58,7 @@ const intializeRequest = async (
     } = transaction;
     const { transaction_id } = context;
     const timestamp = new Date().toISOString();
-
+    console.log("provider",provider.location.id,"provider_location",provider_location)
     let confirm;
     if(version==="b2b"){
       const confirmb2b = {
@@ -176,7 +176,7 @@ const intializeRequest = async (
               id: provider.id,
               locations: [
                 {
-                  ...provider_location,
+                  ...provider.location
                 },
               ],
             },

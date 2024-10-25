@@ -50,7 +50,7 @@ const intializeRequest = async (
 	try {
 		const { context, message } = transaction;
 		const { transaction_id } = context;
-
+		console.log("hererrrrr",version)
 		let file: any = "";
 
     switch(version){
@@ -76,7 +76,8 @@ const intializeRequest = async (
 		}
 
 		let select;
-		
+		console.log("herrrrrrresponse",JSON.stringify(response?.value?.message?.order?.items[0].quantity))
+		console.log("herrrrrrresponse",JSON.stringify(message.catalog))
 		if(version==="b2b") {
 			const selectb2b = {
 				context: {
@@ -109,6 +110,7 @@ const intializeRequest = async (
 								fulfillment_ids: [
 									message.catalog.providers[0].items[0].fulfillment_ids[0],
 								],
+								// quantity:message.catalog.providers[0].items[0].quantity
 								 quantity:response?.value?.message?.order?.items[0].quantity,
 							},
 						],
@@ -180,7 +182,7 @@ const intializeRequest = async (
 			};
 			select=selectB2c
 		}
-			
+			console.log("hereSelectResponse",JSON.stringify(select))
 		await send_response(
 			res,
 			next,

@@ -8,6 +8,7 @@ import {
 	Breakup,
 	quoteCreatorB2c,
 	quoteCreator,
+	logger,
 } from "../../../lib/utils";
 import { ERROR_MESSAGES } from "../../../lib/utils/responseMessages";
 interface Item_id_name {
@@ -78,6 +79,7 @@ export const selectController = async (
         "selected" in itm.quantity &&
         itm.quantity.selected.count > item.available_qty
       ) {
+				logger.info(`${itm.quantity.selected.count },herereeeeeee${item.available_qty}`)
         return send_nack(
           res,
           `Required Quantity for Item:${item.name} is unavailable.`
@@ -189,7 +191,7 @@ export const selectDomesticController = (
 		}
 		
 
-		
+		console.log("responseMEssage",JSON.stringify(responseMessage))
 		try {
 			responseMessage.order.quote.breakup.forEach((element: Breakup) => {
 				if (element["@ondc/org/title_type"] === "item") {

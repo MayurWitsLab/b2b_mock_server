@@ -99,18 +99,30 @@ export const onInitSchema = {
 								id: {
 									type: "string",
 								},
-							},
-							required: ["id"],
-						},
-						provider_location: {
-							type: "object",
-							properties: {
-								id: {
-									type: "string",
+								locations: {
+									type: "array",
+									items: {
+										type: "object",
+										properties: {
+											id: {
+												type: "string",
+											},
+										},
+										required: ["id"],
+									},
 								},
 							},
-							required: ["id"],
+							required: ["id","location"],
 						},
+						// provider_location: {
+						// 	type: "object",
+						// 	properties: {
+						// 		id: {
+						// 			type: "string",
+						// 		},
+						// 	},
+						// 	required: ["id"],
+						// },
 						items: {
 							type: "array",
 							items: {
@@ -688,7 +700,7 @@ export const onInitSchema = {
 					additionalProperties: false,
 					required: [
 						"provider",
-						"provider_location",
+						// "provider_location",
 						"items",
 						"billing",
 						"fulfillments",

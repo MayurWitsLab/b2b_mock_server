@@ -264,7 +264,7 @@ export const onCancelSchema = {
                         properties: {
                           code: {
                             type: "string",
-                            enum: ["Cancelled"],
+                            enum: ["CANCELLED"],
                           },
                         },
                         required: ["code"],

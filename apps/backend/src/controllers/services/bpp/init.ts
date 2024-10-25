@@ -168,7 +168,11 @@ const initConsultationController = (
 			order: {
 				provider: remainingProvider,
 				locations,
-				items,
+				items:[{
+					id:items[0].id,
+					fulfillment_ids:items[0].fulfillment_ids,
+					quantity:items[0].quantity
+				}],
 				billing,
 				fulfillments: updatedFulfillments,
 				quote: quoteData,
@@ -211,6 +215,7 @@ const initConsultationController = (
 								: response?.value?.message?.order?.payments[0]?.tags,
 					},
 				],
+				xinput:response?.value?.message?.order?.xinput,
 			},
 		};
 		delete req.body?.providersItems;

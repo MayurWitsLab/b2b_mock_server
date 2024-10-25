@@ -1,5 +1,7 @@
 import { DOMAIN, SRV_FULFILLMENT_STATE, SRV_ORDER_STATE, VERSION } from "./constants";
-
+const SRV_ORDER_STATE_UPDATE=SRV_ORDER_STATE.map((item)=>
+  item=item.toUpperCase()
+  )
 export const onStatusSchema = {
   $id: "onStatusSchema",
   type: "object",
@@ -230,7 +232,7 @@ export const onStatusSchema = {
                         properties: {
                           code: {
                             type: "string",
-                            enum: SRV_FULFILLMENT_STATE,
+                            enum: SRV_ORDER_STATE_UPDATE,
                           },
                         },
                         required: ["code"],

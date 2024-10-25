@@ -420,6 +420,7 @@ export const quoteCreator = (items: Item[]) => {
 	];
 
 	items.forEach((item: any) => {
+		console.log("atresponsebuilder",item)
 		breakup = [
 			...breakup,
 			...chargesOnItem,

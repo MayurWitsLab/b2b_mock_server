@@ -7,7 +7,7 @@ import { statusController } from "./status";
 import { updateController } from "./update";
 import { jsonSchemaValidator, redisRetriever } from "../../../middlewares";
 import { cancelController } from "./cancel";
-import { logger } from "../../../lib/utils";
+import { logger, redis } from "../../../lib/utils";
 import { VersionType } from "../../../middlewares";
 export const bppRouter = Router();
 let version: VersionType | undefined;
@@ -60,46 +60,154 @@ bppRouter.post(
 
 bppRouter.post(
 	"/init",
-	jsonSchemaValidator({ domain: "retail", action: "init", VERSION: version }),
+	async (req, res, next) => {
+		const { context } = req.body; // Access context again
+		let version: VersionType; // Define version locally
+
+		const VERSION=await redis.keys(`${context.transaction_id}-version-*`)
+		const parts = VERSION[0].split('-');
+		const versionn = parts[parts.length - 1];
+		if (context?.location?.city?.code?.toLowerCase() === "un:sin" || context?.location?.city?.code?.toLowerCase() === "std:999") {
+			version = "b2c" as VersionType;
+		} else {
+			version = "b2b" as VersionType;
+		}
+
+		console.log(`version at on_select: ${version}`);
+		
+		jsonSchemaValidator({ domain: "retail", action: "init", VERSION: version });
+		next()
+	},
+	// jsonSchemaValidator({ domain: "retail", action: "init", VERSION: version }),
 	redisRetriever,
 	initController
 );
 
 bppRouter.post(
 	"/select",
-	jsonSchemaValidator({ domain: "retail", action: "select", VERSION: version }),
+	async (req, res, next) => {
+		const { context } = req.body; // Access context again
+		let version: VersionType; // Define version locally
+
+		const VERSION=await redis.keys(`${context.transaction_id}-version-*`)
+		const parts = VERSION[0].split('-');
+		const versionn = parts[parts.length - 1];
+		if (context?.location?.city?.code?.toLowerCase() === "un:sin" || context?.location?.city?.code?.toLowerCase() === "std:999") {
+			version = "b2c" as VersionType;
+		} else {
+			version = "b2b" as VersionType;
+		}
+
+		console.log(`version at on_select: ${version}`);
+		
+		jsonSchemaValidator({ domain: "retail", action: "select", VERSION: version });
+		next()
+	},
+	// jsonSchemaValidator({ domain: "retail", action: "select", VERSION: version }),
 	redisRetriever,
 	selectController
 );
 
 bppRouter.post(
 	"/confirm",
-	jsonSchemaValidator({
-		domain: "retail",
-		action: "confirm",
-		VERSION: version,
-	}),
+	async (req, res, next) => {
+		const { context } = req.body; // Access context again
+		let version: VersionType; // Define version locally
+
+		const VERSION=await redis.keys(`${context.transaction_id}-version-*`)
+		const parts = VERSION[0].split('-');
+		const versionn = parts[parts.length - 1];
+		if (context?.location?.city?.code?.toLowerCase() === "un:sin" || context?.location?.city?.code?.toLowerCase() === "std:999") {
+			version = "b2c" as VersionType;
+		} else {
+			version = "b2b" as VersionType;
+		}
+
+		console.log(`version at on_select: ${version}`);
+		
+		jsonSchemaValidator({ domain: "retail", action: "confirm", VERSION: version });
+		next()
+	},
+	// jsonSchemaValidator({
+	// 	domain: "retail",
+	// 	action: "confirm",
+	// 	VERSION: version,
+	// }),
 	redisRetriever,
 	confirmController
 );
 
 bppRouter.post(
 	"/update",
-	jsonSchemaValidator({ domain: "retail", action: "update", VERSION: version }),
+	async (req, res, next) => {
+		const { context } = req.body; // Access context again
+		let version: VersionType; // Define version locally
+
+		const VERSION=await redis.keys(`${context.transaction_id}-version-*`)
+		const parts = VERSION[0].split('-');
+		const versionn = parts[parts.length - 1];
+		if (context?.location?.city?.code?.toLowerCase() === "un:sin" || context?.location?.city?.code?.toLowerCase() === "std:999") {
+			version = "b2c" as VersionType;
+		} else {
+			version = "b2b" as VersionType;
+		}
+
+		console.log(`version at on_select: ${version}`);
+		
+		jsonSchemaValidator({ domain: "retail", action: "update", VERSION: version });
+		next()
+	},
+	// jsonSchemaValidator({ domain: "retail", action: "update", VERSION: version }),
 	redisRetriever,
 	updateController
 );
 
 bppRouter.post(
 	"/status",
-	jsonSchemaValidator({ domain: "retail", action: "status", VERSION: version }),
+	async (req, res, next) => {
+		const { context } = req.body; // Access context again
+		let version: VersionType; // Define version locally
+
+		const VERSION=await redis.keys(`${context.transaction_id}-version-*`)
+		const parts = VERSION[0].split('-');
+		const versionn = parts[parts.length - 1];
+		if (context?.location?.city?.code?.toLowerCase() === "un:sin" || context?.location?.city?.code?.toLowerCase() === "std:999") {
+			version = "b2c" as VersionType;
+		} else {
+			version = "b2b" as VersionType;
+		}
+
+		console.log(`version at on_select: ${version}`);
+		
+		jsonSchemaValidator({ domain: "retail", action: "status", VERSION: version });
+		next()
+	},
+	// jsonSchemaValidator({ domain: "retail", action: "status", VERSION: version }),
 	redisRetriever,
 	statusController
 );
 
 bppRouter.post(
 	"/cancel",
-	jsonSchemaValidator({ domain: "retail", action: "cancel", VERSION: version }),
+	async (req, res, next) => {
+		const { context } = req.body; // Access context again
+		let version: VersionType; // Define version locally
+
+		const VERSION=await redis.keys(`${context.transaction_id}-version-*`)
+		const parts = VERSION[0].split('-');
+		const versionn = parts[parts.length - 1];
+		if (context?.location?.city?.code?.toLowerCase() === "un:sin" || context?.location?.city?.code?.toLowerCase() === "std:999") {
+			version = "b2c" as VersionType;
+		} else {
+			version = "b2b" as VersionType;
+		}
+
+		console.log(`version at on_select: ${version}`);
+		
+		jsonSchemaValidator({ domain: "retail", action: "cancel", VERSION: version });
+		next()
+	},
+	// jsonSchemaValidator({ domain: "retail", action: "cancel", VERSION: version }),
 	redisRetriever,
 	cancelController
 );
