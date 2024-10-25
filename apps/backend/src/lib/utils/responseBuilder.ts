@@ -101,14 +101,14 @@ export const responseBuilder = async (
 		domain === "b2b"
 			? B2B_BPP_MOCKSERVER_URL
 			: domain === "b2c"
-			? B2C_BPP_MOCKSERVER_URL
-			: domain === "retail"
-			? REATIL_BPP_MOCKSERVER_URL
-			: domain === "logistics"
-			? LOGISTICS_BPP_MOCKSERVER_URL
-			: domain === "subscription"
-			? SUBSCRIPTION_BPP_MOCKSERVER_URL
-			: SERVICES_BPP_MOCKSERVER_URL;
+				? B2C_BPP_MOCKSERVER_URL
+				: domain === "retail"
+					? REATIL_BPP_MOCKSERVER_URL
+					: domain === "logistics"
+						? LOGISTICS_BPP_MOCKSERVER_URL
+						: domain === "subscription"
+							? SUBSCRIPTION_BPP_MOCKSERVER_URL
+							: SERVICES_BPP_MOCKSERVER_URL;
 
 	if (action.startsWith("on_")) {
 		async = {
@@ -157,21 +157,19 @@ export const responseBuilder = async (
 				).length;
 				if (domain === "services") {
 					await redis.set(
-						`${
-							(async.context! as any).transaction_id
+						`${(async.context! as any).transaction_id
 						}-${action}-from-server-${id}-${ts.toISOString()}`,
 						JSON.stringify(log)
 					);
 				} else {
 					await redis.set(
-						`${
-							(async.context! as any).transaction_id
+						`${(async.context! as any).transaction_id
 						}-${logIndex}-${action}-from-server-${id}-${ts.toISOString()}`,
 						JSON.stringify(log)
 					);
 				}
 			} else {
-					await redis.set(
+				await redis.set(
 					`${(async.context! as any).transaction_id}-${action}-from-server-${id}-${ts.toISOString()}`,
 					JSON.stringify(log)
 				);
@@ -191,8 +189,7 @@ export const responseBuilder = async (
 				};
 
 				await redis.set(
-					`${
-						(async.context! as any).transaction_id
+					`${(async.context! as any).transaction_id
 					}-${action}-from-server-${id}-${ts.toISOString()}`,
 					JSON.stringify(log)
 				);
@@ -201,22 +198,21 @@ export const responseBuilder = async (
 					error instanceof AxiosError
 						? error?.response?.data
 						: {
-								message: {
-									ack: {
-										status: "NACK",
-									},
+							message: {
+								ack: {
+									status: "NACK",
 								},
-								error: {
-									message: error,
-								},
-						  };
+							},
+							error: {
+								message: error,
+							},
+						};
 				log.response = {
 					timestamp: new Date().toISOString(),
 					response: response,
 				};
 				await redis.set(
-					`${
-						(async.context! as any).transaction_id
+					`${(async.context! as any).transaction_id
 					}-${action}-from-server-${id}-${ts.toISOString()}`,
 					JSON.stringify(log)
 				);
@@ -288,14 +284,14 @@ export const sendStatusAxiosCall = async (
 		domain === "b2b"
 			? B2B_BPP_MOCKSERVER_URL
 			: domain === "agri-services"
-			? AGRI_SERVICES_BPP_MOCKSERVER_URL
-			: domain === "logistics"
-			? LOGISTICS_BPP_MOCKSERVER_URL
-			: domain === "healthcare-service"
-			? HEALTHCARE_SERVICES_BPP_MOCKSERVER_URL
-			: domain === "agri-equipment-hiring"
-			? AGRI_EQUIPMENT_BPP_MOCKSERVER_URL
-			: SERVICES_BPP_MOCKSERVER_URL;
+				? AGRI_SERVICES_BPP_MOCKSERVER_URL
+				: domain === "logistics"
+					? LOGISTICS_BPP_MOCKSERVER_URL
+					: domain === "healthcare-service"
+						? HEALTHCARE_SERVICES_BPP_MOCKSERVER_URL
+						: domain === "agri-equipment-hiring"
+							? AGRI_EQUIPMENT_BPP_MOCKSERVER_URL
+							: SERVICES_BPP_MOCKSERVER_URL;
 
 	async = {
 		...async,
@@ -337,15 +333,15 @@ export const sendStatusAxiosCall = async (
 				error instanceof AxiosError
 					? error?.response?.data
 					: {
-							message: {
-								ack: {
-									status: "NACK",
-								},
+						message: {
+							ack: {
+								status: "NACK",
 							},
-							error: {
-								message: error,
-							},
-					  };
+						},
+						error: {
+							message: error,
+						},
+					};
 			log.response = {
 				timestamp: new Date().toISOString(),
 				response: response,
@@ -420,7 +416,7 @@ export const quoteCreator = (items: Item[]) => {
 	];
 
 	items.forEach((item: any) => {
-		console.log("atresponsebuilder",item)
+		console.log("atresponsebuilder", item)
 		breakup = [
 			...breakup,
 			...chargesOnItem,
@@ -532,13 +528,13 @@ export const quoteCreatorB2c = (items: Item[], providersItems?: any) => {
 			if (matchingItem) {
 				item.title = matchingItem?.descriptor?.name;
 				// item.price = matchingItem?.price;
-				item.price={
-					currency:matchingItem.price.currency,
-					value:matchingItem.price.value
+				item.price = {
+					currency: matchingItem.price.currency,
+					value: matchingItem.price.value
 				}
-				if(matchingItem?.tags[0].descriptor.code!=='origin'){
+				if (matchingItem?.tags[0].descriptor.code !== 'origin') {
 					item.tags = matchingItem?.tags;
-				}	
+				}
 			}
 		}
 	});
@@ -634,13 +630,13 @@ export const quoteCreatorAgriService = (
 			item:
 				item.title === "tax"
 					? {
-							id: item.id,
-					  }
+						id: item.id,
+					}
 					: {
-							id: item.id,
-							price: item.price,
-							quantity: item.quantity ? item.quantity : undefined,
-					  },
+						id: item.id,
+						price: item.price,
+						quantity: item.quantity ? item.quantity : undefined,
+					},
 		});
 	});
 
@@ -781,13 +777,13 @@ export const quoteCreatorHealthCareService = (
 				item:
 					item.title === "tax"
 						? {
-								id: item?.id,
-						  }
+							id: item?.id,
+						}
 						: {
-								id: item?.id,
-								price: item?.price,
-								quantity: item?.quantity ? item?.quantity : undefined,
-						  },
+							id: item?.id,
+							price: item?.price,
+							quantity: item?.quantity ? item?.quantity : undefined,
+						},
 			});
 		});
 
@@ -1050,13 +1046,13 @@ export const quoteSubscription = (
 				item:
 					item.title === "tax"
 						? {
-								id: item?.id,
-						  }
+							id: item?.id,
+						}
 						: {
-								id: item?.id,
-								price: item?.price,
-								quantity: item?.quantity ? item?.quantity : undefined,
-						  },
+							id: item?.id,
+							price: item?.price,
+							quantity: item?.quantity ? item?.quantity : undefined,
+						},
 			});
 		});
 
@@ -1129,10 +1125,10 @@ export const quoteSubscription = (
 			scenario === "single-order"
 				? totalPrice
 				: calculateQuotePrice(
-						fulfillment?.stops[0]?.time?.duration,
-						fulfillment?.stops[0]?.time.schedule?.frequency,
-						totalPrice
-				  );
+					fulfillment?.stops[0]?.time?.duration,
+					fulfillment?.stops[0]?.time.schedule?.frequency,
+					totalPrice
+				);
 
 		const result = {
 			breakup,
@@ -1165,28 +1161,28 @@ export const quoteCommon = (tempItems: Item[], providersItems?: any) => {
 				value: matchingItem.price.value
 			};
 			item.price = pp
-			if(matchingItem?.tags[0].descriptor.code!='reschedule_terms'){
+			if (matchingItem?.tags[0].descriptor.code != 'reschedule_terms') {
 				item.tags = matchingItem?.tags;
 			}
-			else{
-				const tag=[
-                            {
-                                "descriptor": {
-                                    "code": "title"
-                                },
-                                "list": [
-                                    {
-                                        "descriptor": {
-                                            "code": "type"
-                                        },
-                                        "value": "item"
-                                    }
-                                ]
-                            }
-                        ]
-						item.tags=tag
+			else {
+				const tag = [
+					{
+						"descriptor": {
+							"code": "title"
+						},
+						"list": [
+							{
+								"descriptor": {
+									"code": "type"
+								},
+								"value": "item"
+							}
+						]
+					}
+				]
+				item.tags = tag
 			}
-			 
+
 		}
 	});
 
@@ -1209,15 +1205,15 @@ export const quoteCommon = (tempItems: Item[], providersItems?: any) => {
 			},
 		});
 	});
-	const price={
-		currency:items[0].price.currency,
-		value:items[0].price.value
+	const price = {
+		currency: items[0].price.currency,
+		value: items[0].price.value
 	}
 
-	const itemtobe={
-		id:items[0].id,
-		price:price,
-		quantity:items[0].quantity
+	const itemtobe = {
+		id: items[0].id,
+		price: price,
+		quantity: items[0].quantity
 	}
 	//ADD STATIC TAX IN BREAKUP QUOTE
 	breakup.push({
@@ -1446,19 +1442,6 @@ export const updateFulfillments = (
 				ele.time.label = FULFILLMENT_LABELS.CONFIRMED;
 				return ele;
 			}),
-			tags:{
-                "descriptor": {
-                  "code": "schedule"
-                },
-                "list": [
-                  {
-                    "descriptor": {
-                      "code": "ttl"
-                    },
-                    "value": "PT1H"
-                  }
-                ]
-              }
 		};
 
 		if (domain !== "subscription") {

@@ -171,7 +171,8 @@ const initConsultationController = (
 				items:[{
 					id:items[0].id,
 					fulfillment_ids:items[0].fulfillment_ids,
-					quantity:items[0].quantity
+					quantity:items[0].quantity,
+					parent_item_id:items[0].parent_item_id
 				}],
 				billing,
 				fulfillments: updatedFulfillments,
