@@ -25,7 +25,11 @@ export const TransactionSearch = () => {
 			const response = await axios.get(
 				`${import.meta.env.VITE_SERVER_URL}/analyse/${transaction}`
 			);
-			const formattedResponse = response.data
+			
+			const filteredResponse = response.data.filter(
+				(item:any) => item.hasOwnProperty('response') // Only keep objects that have the 'response' property
+			  );
+			const formattedResponse = filteredResponse
         .reduce(
           (
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
