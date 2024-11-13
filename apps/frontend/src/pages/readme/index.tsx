@@ -539,8 +539,7 @@ const ONDCDocumentation = () => {
 					<li>Enter the BAP URL in the Request Payload:</li>
 					<ul>
 						<li>Services: <a href="https://mock.ondc.org/api/services/bap">https://mock.ondc.org/api/services/bap</a></li>
-						<li>B2B: <a href="https://mock.ondc.org/api/b2b/bap">https://mock.ondc.org/api/b2b/bap</a></li>
-						<li>B2C: <a href="https://mock.ondc.org/api/b2c/bap">https://mock.ondc.org/api/b2c/bap</a></li>
+						<li>Retail: <a href="https://mock.ondc.org/api/retail/bap">https://mock.ondc.org/api/retail/bap</a></li>
 					</ul>
 				</ul>
 				<img src={BapSearch} alt="Search Request Type" style={{ width: '100%', maxWidth: '600px', margin: '20px 0' }} />
