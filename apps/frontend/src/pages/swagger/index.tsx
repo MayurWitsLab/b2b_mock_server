@@ -3,6 +3,7 @@ import "swagger-ui-react/swagger-ui.css";
 import { SwaggerDownloadButton } from "../../components";
 import b2bswaggerSpec from "openapi-specs/retail-b2b.json";
 import serviceswaggerSpec from "openapi-specs/services.json";
+import logisticsswaggerSpec from "../../../../../packages/openapi/openapi/logistics/build/swagger.json";
 import { useEffect, useState } from "react";
 import SwaggerUI from "swagger-ui-react";
 import { useDomain } from "../../utils/hooks";
@@ -14,8 +15,24 @@ export const Swagger = () => {
 	const { domain } = useDomain();
 
 	useEffect(() => {
-		const swaggerFile =
-			domain === "retail" ? b2bswaggerSpec : serviceswaggerSpec;
+		let swaggerFile
+		switch(domain){
+			case "retail":
+				swaggerFile=b2bswaggerSpec
+				break;
+			case "services":
+				swaggerFile=serviceswaggerSpec
+				break;
+			case "logistics":
+				swaggerFile=logisticsswaggerSpec
+				break;
+			case "Subscription":
+				swaggerFile=serviceswaggerSpec
+				break;
+			default:
+				swaggerFile=serviceswaggerSpec
+				break;
+		}
 		const yamlFileName = domain === "retail" ? "b2b.yaml" : "services.yaml";
 		setSwaggerSpec(swaggerFile);
 		setFileName(yamlFileName);
