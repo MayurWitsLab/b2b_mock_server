@@ -119,7 +119,7 @@ const confirmDomesticController = (
       },
     };
 
-    if(context.loction.city.code==="std:999"){
+    if(context.location.city.code==="std:999"){
       (responseMessage.order as any).documents = [
         {
           url: "https://seller_terms_url",

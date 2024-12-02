@@ -802,7 +802,6 @@ export const onConfirmSchema = {
 								" should be updated as per context/timestamp - ${3/context/timestamp}",
 						},
 					},
-					additionalProperties: false,
 					required: [
 						"id",
 						"state",
