@@ -260,8 +260,8 @@ export const confirmSchema = {
 									},
 									tags: {
 										type: "array",
-										item:{
-											type:"object",
+										items:{
+											type: "object",
 											properties: {
 												descriptor: {
 													type: "object",
@@ -287,7 +287,7 @@ export const confirmSchema = {
 																			enum: [
 																				"INCOTERMS",
 																				"NAMED_PLACE_OF_DELIVERY",
-																					"RTO_Action"
+																				"RTO_Action"
 																			],
 																		},
 																	},
@@ -302,9 +302,8 @@ export const confirmSchema = {
 														},
 													],
 												},
-											},
-										}
-										
+											}
+										},
 									},
 								},
 								required: ["id", "type", "stops"],

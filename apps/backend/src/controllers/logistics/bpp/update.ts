@@ -11,6 +11,7 @@ import {
 import fs from "fs";
 import path from "path";
 import YAML from "yaml";
+import { time } from "console";
 
 function getRandomFile(directory: string): string | null {
 	const files = fs.readdirSync(directory);
@@ -83,8 +84,7 @@ export const updateController = async (
 				next,
 				response.value.context,
 				response.value.message,
-				`${req.body.context.bap_uri}${
-					req.body.context.bap_uri.endsWith("/") ? "on_update" : "/on_update"
+				`${req.body.context.bap_uri}${req.body.context.bap_uri.endsWith("/") ? "on_update" : "/on_update"
 				}`,
 				`on_update`,
 				"logistics"
@@ -139,6 +139,9 @@ export const updateController = async (
 				return send_nack(res, "On Confirm had errors");
 			}
 			let newTime = new Date().toISOString();
+			let endrange = new Date()
+			endrange.setSeconds(endrange.getSeconds() + 15);
+			let nextrange = endrange
 			let context = {
 				...req.body.context,
 				action: "on_update",
@@ -209,14 +212,56 @@ export const updateController = async (
 					],
 				},
 			];
+
+
+
+			const existingTags = mockOnUpdate.value.message.order.fulfillments[0].tags[0].list;
+
+			// Use a Map to remove duplicates by descriptor code
+			const tagMap = new Map();
+			existingTags.forEach((tag: any) => {
+				tagMap.set(tag.descriptor.code, tag);  // Each code will have only one corresponding tag
+			});
+
+			// Add or update the "Eway_Bill_No" entry
+			tagMap.set("Eway_Bill_No", {
+				descriptor: {
+					code: "Eway_Bill_No"
+				},
+				value: "387757382938"
+			});
+
+			// Convert the Map back to an array
+			const uniqueTagsList = Array.from(tagMap.values());
+
+
+
 			let response = {
 				order: {
 					id: onConfirm.message.order.id,
 					status: "In-progress",
 					provider: onConfirm.message.order.provider,
 					items: updateItems,
-					fulfillments: mockOnUpdate.value.message.order.fulfillments,
-					quote:quotedata ,
+					fulfillments: [{
+						...mockOnUpdate.value.message.order.fulfillments[0],
+						stops: [{
+							...mockOnUpdate.value.message.order.fulfillments[0].stops[0],
+							time: {
+								range: {
+									start: newTime,
+									end: endrange
+								}
+							}
+						}],
+						tags: [
+							{
+								...mockOnUpdate.value.message.order.fulfillments[0].tags[0],
+								list: uniqueTagsList
+							}
+						]
+
+					}],
+					quote: mockOnUpdate.value.message.order.quote,
 					updated_at: newTime,
 					billing: onConfirm.message.order.billing,
 					payments: onConfirm.message.order.payments,
@@ -245,8 +290,7 @@ export const updateController = async (
 				next,
 				context,
 				response,
-				`${req.body.context.bap_uri}${
-					req.body.context.bap_uri.endsWith("/") ? "on_update" : "/on_update"
+				`${req.body.context.bap_uri}${req.body.context.bap_uri.endsWith("/") ? "on_update" : "/on_update"
 				}`,
 				`on_update`,
 				"logistics"

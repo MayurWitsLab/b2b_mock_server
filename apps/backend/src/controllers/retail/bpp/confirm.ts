@@ -84,8 +84,50 @@ const confirmDomesticController = (
             ],
           })
         ),
+        cancellation_terms: [
+        {
+          fulfillment_state: {
+            descriptor: {
+              code: "Pending"
+            }
+          },
+          reason_required: false,
+          cancellation_fee: {
+            percentage: "0",
+            amount: {
+              currency: "INR",
+              value: "0"
+            }
+          }
+        },
+        {
+          fulfillment_state: {
+            descriptor: {
+              code: "Packed"
+            }
+          },
+          reason_required: false,
+          cancellation_fee: {
+            percentage: "0",
+            amount: {
+              currency: "INR",
+              value: "0"
+            }
+          }
+        }
+      ]
       },
     };
+
+    if(context.location.city.code==="std:999"){
+      (responseMessage.order as any).documents = [
+        {
+          url: "https://seller_terms_url",
+          label: "SELLER_TERMS"
+        }
+      ];
+    }
+
     return responseBuilder(
       res,
       next,
