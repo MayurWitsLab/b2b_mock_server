@@ -179,7 +179,6 @@ const initDomesticController = async (
       
         } 
       };
-      
       if(context.location.city.code==="std:999"){
         (responseMessageb2b.order as any).documents = [
           {
