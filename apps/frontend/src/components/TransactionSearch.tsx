@@ -25,7 +25,54 @@ export const TransactionSearch = () => {
 			const response = await axios.get(
 				`${import.meta.env.VITE_SERVER_URL}/analyse/${transaction}`
 			);
-			const formattedResponse = response.data
+			
+			type Item = {
+				request: {
+				  context: {
+					action: string;
+					timestamp: string;
+					message_id: string;
+				  };
+				};
+				type: string;
+				id: string;
+				response?: {}; // response is optional
+			  };
+			  
+			  // Function to filter the response
+			  const filterResponse = (data: Item[]): Item[] => {
+				const result: Item[] = [];
+				const actionMap = new Map<string, Item[]>(); // To group items by action
+			  
+				// Group items by action
+				for (const item of data) {
+				  const action = item.request.context.action;
+				  if (!actionMap.has(action)) {
+					actionMap.set(action, []);
+				  }
+				  actionMap.get(action)?.push(item);
+				}
+			  
+				// Iterate through each action group
+				actionMap.forEach(group => {
+				  // Check if any item in the group has a response
+				  const itemWithResponse = group.find(item => item.hasOwnProperty('response'));
+			  
+				  if (itemWithResponse) {
+					// If there's an item with a response, add it to the result
+					result.push(itemWithResponse);
+				  } else {
+					// If no item with a response, take the first item in the group
+					result.push(group[0]);
+				  }
+				});
+			  
+				return result;
+			  };
+			  
+			  const filteredData=filterResponse(response.data)
+			  
+			const formattedResponse = filteredData
         .reduce(
           (
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
